@@ -1,5 +1,5 @@
+const { agregarAFavoritos } = require("./agregarAFavoritos.js");
 const readline = require("readline");
-
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -101,7 +101,26 @@ async function main() {
         obtenerDetallesPelicula(peliculaId);
         break;
       case "3":
-        console.log("Performing Action 3...");
+        if (peliculasDisponibles.length === 0) {
+          console.log("No movies available. Please select option 1 first.");
+          break;
+        }
+
+        console.log("Select a movie to add to favorites:");
+        peliculasDisponibles.forEach((movie, index) => {
+          console.log(`${index + 1}. ${movie.title}`);
+        });
+
+        let seleccion = await questionAsync("Enter the movie number: ");
+        seleccion = parseInt(seleccion);
+
+        if (seleccion < 1 || seleccion > peliculasDisponibles.length) {
+          console.log("Invalid selection.");
+          break;
+        }
+
+        const peliculaSeleccionada = peliculasDisponibles[seleccion - 1];
+        await agregarAFavoritos(peliculaSeleccionada);
         break;
       case "4":
         console.log("Performing Action 4...");
