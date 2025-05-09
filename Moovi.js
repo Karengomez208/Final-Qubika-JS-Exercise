@@ -1,4 +1,8 @@
 const { agregarAFavoritos } = require("./agregarAFavoritos.js");
+const { agregarAWatchlist } = require("./agregarAWatchlist.js");
+const { mostrarWatchlist } = require("./mostrarWatchlist.js");
+const { mostrarFavoritos } = require("./mostrarFavoritos.js");
+
 const readline = require("readline");
 const rl = readline.createInterface({
   input: process.stdin,
@@ -98,7 +102,7 @@ async function main() {
             console.error("Error al obtener detalles:", error);
           }
         }
-        obtenerDetallesPelicula(peliculaId);
+        await obtenerDetallesPelicula(peliculaId);
         break;
       case "3":
         if (peliculasDisponibles.length === 0) {
@@ -123,13 +127,40 @@ async function main() {
         await agregarAFavoritos(peliculaSeleccionada);
         break;
       case "4":
-        console.log("Performing Action 4...");
+        if (peliculasDisponibles.length === 0) {
+          console.log("No movies available. Please select option 1 first.");
+          break;
+        }
+
+        console.log("Select a movie to add to the watchlist:");
+        peliculasDisponibles.forEach((movie, index) => {
+          console.log(`${index + 1}. ${movie.title}`);
+        });
+
+        let seleccionWatchlist = await questionAsync(
+          "Enter the movie number: "
+        );
+        seleccionWatchlist = parseInt(seleccionWatchlist);
+
+        if (
+          seleccionWatchlist < 1 ||
+          seleccionWatchlist > peliculasDisponibles.length
+        ) {
+          console.log("Invalid selection.");
+          break;
+        }
+
+        const peliculaAWL = peliculasDisponibles[seleccionWatchlist - 1];
+
+        await agregarAWatchlist(peliculaAWL);
+
         break;
+
       case "5":
-        console.log("Performing Action 5...");
+        await mostrarFavoritos();
         break;
       case "6":
-        console.log("Performing Action 6...");
+        await mostrarWatchlist();
         break;
       case "7":
         console.log("Exiting program...");
