@@ -1,8 +1,7 @@
 const { agregarAFavoritos } = require("./agregarAFavoritos.js");
 const { agregarAWatchlist } = require("./agregarAWatchlist.js");
 const { mostrarWatchlist } = require("./mostrarWatchlist.js");
-const { mostrarFavoritos } = require("./mostrarFavoritos.js");
-
+const { mostrarFavoritos } = require("./mostrarFavoritos");
 const readline = require("readline");
 const rl = readline.createInterface({
   input: process.stdin,
